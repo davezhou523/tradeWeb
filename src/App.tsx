@@ -2,15 +2,9 @@ import React from 'react';
 import { Layout, Menu, Button } from 'antd';
 import { useAuth } from './contexts/AuthContext';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import {
-  DashboardOutlined,
-  UserAddOutlined,
-  TeamOutlined,
-  MailOutlined,
-  FileTextOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
+
 import styled from '@emotion/styled';
+import { menuItems, getMenuKeys } from './menuItems';
 
 const { Header, Sider, Content } = Layout;
 
@@ -44,45 +38,18 @@ const App: React.FC = () => {
   const { isAuthenticated, logout, user } = useAuth();
 
   React.useEffect(() => {
+    const protectedPaths = getMenuKeys(); // 使用方法获取key
     if (location.pathname === '/' && isAuthenticated) {
       navigate('/dashboard');
     } else if (location.pathname === '/' && !isAuthenticated) {
       navigate('/login');
+    } else if (
+      protectedPaths.includes(location.pathname) &&
+      !isAuthenticated
+    ) {
+      navigate('/login');
     }
   }, [location.pathname, navigate, isAuthenticated]);
-
-  const menuItems = [
-    {
-      key: '/dashboard',
-      icon: <DashboardOutlined />,
-      label: '仪表盘',
-    },
-    {
-      key: '/customer-acquisition',
-      icon: <UserAddOutlined />,
-      label: '客户获取',
-    },
-    {
-      key: '/customer-management',
-      icon: <TeamOutlined />,
-      label: '客户管理',
-    },
-    {
-      key: '/email-marketing',
-      icon: <MailOutlined />,
-      label: '邮件营销',
-    },
-    {
-      key: '/email-templates',
-      icon: <FileTextOutlined />,
-      label: '邮件模板',
-    },
-    {
-      key: '/settings',
-      icon: <SettingOutlined />,
-      label: '系统设置',
-    },
-  ];
 
   if (location.pathname === '/login') {
     if (isAuthenticated) {
