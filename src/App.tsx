@@ -15,6 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import enUS from 'antd/locale/en_US';
+import { menuItems } from './menuItems';
 
 const { Header, Sider, Content } = Layout;
 
@@ -59,39 +60,6 @@ const App: React.FC = () => {
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
-
-  const menuItems = [
-    {
-      key: '/dashboard',
-      icon: <DashboardOutlined />,
-      label: t('dashboard') || '仪表盘',
-    },
-    {
-      key: '/customer-acquisition',
-      icon: <UserAddOutlined />,
-      label: t('customer_acquisition') || '客户获取',
-    },
-    {
-      key: '/customer-management',
-      icon: <TeamOutlined />,
-      label: t('customer_management') || '客户管理',
-    },
-    {
-      key: '/email-marketing',
-      icon: <MailOutlined />,
-      label: t('email_marketing') || '邮件营销',
-    },
-    {
-      key: '/email-templates',
-      icon: <FileTextOutlined />,
-      label: t('email_templates') || '邮件模板',
-    },
-    {
-      key: '/settings',
-      icon: <SettingOutlined />,
-      label: t('system_settings') || '系统设置',
-    },
-  ];
 
   if (location.pathname === '/login') {
     if (isAuthenticated) {
