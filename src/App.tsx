@@ -2,19 +2,13 @@ import React from 'react';
 import { Layout, Menu, Button, Select } from 'antd';
 import { useAuth } from './contexts/AuthContext';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import {
-  DashboardOutlined,
-  UserAddOutlined,
-  TeamOutlined,
-  MailOutlined,
-  FileTextOutlined,
-  SettingOutlined,
-} from '@ant-design/icons';
+
 import styled from '@emotion/styled';
 import { useTranslation } from 'react-i18next';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import enUS from 'antd/locale/en_US';
+import { getMenuKeys } from './menuItems';
 
 const { Header, Sider, Content } = Layout;
 
@@ -49,13 +43,20 @@ const App: React.FC = () => {
   const { i18n, t } = useTranslation();
 
   React.useEffect(() => {
+    const protectedPaths = getMenuKeys(); // 使用方法获取key
     if (location.pathname === '/' && isAuthenticated) {
       navigate('/dashboard');
     } else if (location.pathname === '/' && !isAuthenticated) {
       navigate('/login');
+    } else if (
+      protectedPaths.includes(location.pathname) &&
+      !isAuthenticated
+    ) {
+      navigate('/login');
     }
   }, [location.pathname, navigate, isAuthenticated]);
 
+<<<<<<< HEAD
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
@@ -93,6 +94,8 @@ const App: React.FC = () => {
     },
   ];
 
+=======
+>>>>>>> 99aa6fef0d30b1d3809aab0d9deb4d11b70cd3b0
   if (location.pathname === '/login') {
     if (isAuthenticated) {
       navigate('/dashboard');
