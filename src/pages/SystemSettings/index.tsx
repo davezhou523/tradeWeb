@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Card, Tabs, Form, Input, Button, Upload, Table, Switch, Space, Select } from 'antd';
 import { UploadOutlined, UserOutlined, TeamOutlined, MailOutlined, DatabaseOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
+import { useTranslation } from 'react-i18next';
 
 const Container = styled.div`
   padding: 24px;
 `;
 
-const SystemSettings: React.FC = () => {
+const SystemSettings = () => {
+  const { t } = useTranslation();
   const [form] = Form.useForm();
 
   const items = [
@@ -17,8 +19,8 @@ const SystemSettings: React.FC = () => {
       icon: <UserOutlined />,
       children: (
         <Form form={form} layout="vertical" style={{ maxWidth: 600 }}>
-          <Form.Item name="name" label="姓名" rules={[{ required: true }]}>
-            <Input placeholder="请输入姓名" />
+          <Form.Item name="name" label={t('name')} rules={[{ required: true }]}>
+            <Input placeholder={t('please_input_name')} />
           </Form.Item>
           <Form.Item name="email" label="邮箱" rules={[{ required: true, type: 'email' }]}>
             <Input placeholder="请输入邮箱" />

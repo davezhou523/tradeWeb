@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>菜鸟教程 React 实例</title>
+    <script src="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/react/18.2.0/umd/react.production.min.js" ></script>
+    <script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://lf9-cdn-tos.bytecdntp.com/cdn/expire-1-M/babel-standalone/6.26.0/babel.min.js" ></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+    class Button extends React.Component {
+        constructor(props) {
+            super(props);
+            this.state = { data: 0 };
+            this.setNewNumber = this.setNewNumber.bind(this);
+        }
+
+        setNewNumber() {
+            this.setState({ data: this.state.data + 1 });
+        }
+
+        render() {
+            return (
+                <div>
+                    <button onClick={this.setNewNumber}>INCREMENT</button>
+                    <Content myNumber={this.state.data} />
+                </div>
+            );
+        }
+    }
+
+    class Content extends React.Component {
+        componentDidMount() {
+            console.log("Content Component DID MOUNT!");
+        }
+
+        shouldComponentUpdate(newProps, newState) {
+            console.log("Content shouldComponentUpdate",newProps,newState);
+            return true;
+        }
+
+        componentDidUpdate(prevProps, prevState) {
+            console.log("Content Component DID UPDATE!");
+        }
+
+        componentWillUnmount() {
+            console.log("Content Component WILL UNMOUNT!");
+        }
+
+        render() {
+            return (
+                <div>
+                    <h3>{this.props.myNumber}</h3>
+                </div>
+            );
+        }
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(
+        <div>
+            <Button />
+        </div>
+    );
+</script>
+
+
+</body>
+</html>

@@ -3,6 +3,7 @@ import { Card, Form, Input, Button, Checkbox, Tabs, Select, message } from 'antd
 import { useAuth } from '../../contexts/AuthContext';
 import { GoogleOutlined, UserOutlined, LockOutlined, MobileOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
+import { useTranslation } from 'react-i18next';
 
 const LoginContainer = styled.div`
   display: flex;
@@ -30,6 +31,7 @@ const LogoContainer = styled.div`
 const Login: React.FC = () => {
   const [form] = Form.useForm();
   const { login, loginWithPhone } = useAuth();
+  const { i18n, t } = useTranslation();
   
   // 设置默认账号和密码
   useEffect(() => {
@@ -51,33 +53,33 @@ const Login: React.FC = () => {
       } else if (values.phone) {
         await loginWithPhone(values.phone, values.verificationCode);
       }
-      message.success('登录成功');
+      message.success(t('login_success'));
     } catch (error) {
-      message.error('登录失败，请检查账号密码');
+      message.error(t('login_failed'));
     }
   };
 
   const items = [
     {
       key: 'email',
-      label: '邮箱登录',
+      label: t('login_email'),
       children: (
         <Form form={form} onFinish={handleSubmit}>
-          <Form.Item name="email" rules={[{ required: true, message: '请输入邮箱' }]}>
-            <Input prefix={<UserOutlined />} placeholder="邮箱" />
+          <Form.Item name="email" rules={[{ required: true, message: t('please_input_email') }]}>
+            <Input prefix={<UserOutlined />} placeholder={t('email')} />
           </Form.Item>
-          <Form.Item name="password" rules={[{ required: true, message: '请输入密码' }]}>
-            <Input.Password prefix={<LockOutlined />} placeholder="密码" />
+          <Form.Item name="password" rules={[{ required: true, message: t('please_input_password') }]}>
+            <Input.Password prefix={<LockOutlined />} placeholder={t('password')} />
           </Form.Item>
           <Form.Item>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <Checkbox>记住登录状态</Checkbox>
-              <a href="/forgot-password">忘记密码？</a>
+              <Checkbox>{t('remember_me')}</Checkbox>
+              <a href="/forgot-password">{t('forgot_password')}</a>
             </div>
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" block>
-              登录
+              {t('login')}
             </Button>
           </Form.Item>
         </Form>
@@ -85,10 +87,10 @@ const Login: React.FC = () => {
     },
     {
       key: 'phone',
-      label: '手机号登录',
+      label: t('login_phone'),
       children: (
         <Form form={form} onFinish={handleSubmit}>
-          <Form.Item name="phone" rules={[{ required: true, message: '请输入手机号' }]}>
+          <Form.Item name="phone" rules={[{ required: true, message: t('please_input_phone') }]}>
             <Input
               prefix={<MobileOutlined />}
               addonBefore={
@@ -97,22 +99,22 @@ const Login: React.FC = () => {
                   <Select.Option value="87">+87</Select.Option>
                 </Select>
               }
-              placeholder="手机号"
+              placeholder={t('phone')}
             />
           </Form.Item>
-          <Form.Item name="verificationCode" rules={[{ required: true, message: '请输入验证码' }]}>
+          <Form.Item name="verificationCode" rules={[{ required: true, message: t('please_input_code') }]}>
             <Input
-              placeholder="验证码"
+              placeholder={t('code')}
               suffix={
                 <Button type="link" size="small">
-                  获取验证码
+                  {t('get_code')}
                 </Button>
               }
             />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" block>
-              登录
+              {t('login')}
             </Button>
           </Form.Item>
         </Form>
@@ -123,8 +125,19 @@ const Login: React.FC = () => {
   return (
     <LoginContainer>
       <LoginCard>
+        {/* 语言切换下拉框 */}
+        <div style={{ textAlign: 'right', marginBottom: 8 }}>
+          <Select
+            defaultValue={i18n.language}
+            style={{ width: 100 }}
+            onChange={lng => i18n.changeLanguage(lng)}
+          >
+            <Select.Option value="zh">中文</Select.Option>
+            <Select.Option value="en">English</Select.Option>
+          </Select>
+        </div>
         <LogoContainer>
-          <h1>外贸SaaS系统</h1>
+          <h1>{t('app_name') || '外贸SaaS系统'}</h1>
         </LogoContainer>
         <Button
           icon={<GoogleOutlined />}
@@ -132,12 +145,12 @@ const Login: React.FC = () => {
           style={{ marginBottom: 24 }}
           onClick={() => console.log('Google login clicked')}
         >
-          使用Google账号登录
+          {t('login_with_google')}
         </Button>
         <Tabs items={items} />
         <div style={{ textAlign: 'center', marginTop: 16 }}>
-          <span>还没有账号？</span>
-          <a href="/register">立即注册</a>
+          <span>{t('no_account')}</span>
+          <a href="/register">{t('register_now')}</a>
         </div>
       </LoginCard>
     </LoginContainer>
